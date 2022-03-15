@@ -1,11 +1,10 @@
 package disparter.apps.abtester;
 
-import org.junit.jupiter.api.Disabled;
+import disparter.apps.abtester.config.TestRedisConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-@Disabled("redis server is not configured")
+@SpringBootTest(classes = TestRedisConfiguration.class)
 class AbtesterApplicationTests {
 
 	@Test
