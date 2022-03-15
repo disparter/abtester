@@ -1,18 +1,29 @@
 plugins {
-	id 'org.springframework.boot' version '2.5.7'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'org.springframework.boot' version '2.6.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'maven-publish'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+	}
 }
 
 group = 'disparter.apps'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+version = '0.0.1'
+
+sourceCompatibility = 17
+targetCompatibility = 17
 
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
 }
+
+ext['slf4j.version'] = '1.7.20'
 
 repositories {
 	mavenCentral()
@@ -27,6 +38,8 @@ ext {
 }
 
 dependencies {
+	implementation platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
@@ -55,6 +68,31 @@ dependencies {
 	testImplementation group: 'org.mockito', name: 'mockito-inline'
 }
 
+springBoot {
+	buildInfo()
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+configurations.all {
+	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+		if (details.requested.group == 'org.slf4j') {
+			details.useVersion '1.7.20'
+		}
+	}
+}
+
+publishing {
+	publications {
+		bootJava(MavenPublication) {
+			artifact bootJar
+		}
+	}
+	repositories {
+		maven {
+			url 'https://repo.example.com'
+		}
+	}
 }

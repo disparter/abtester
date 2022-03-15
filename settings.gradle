@@ -5,4 +5,21 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
+dependencyResolutionManagement {
+	versionCatalogs {
+		libs {
+			library('spring-cloud-bom', 'org.springframework.cloud:spring-cloud-dependencies:2021.0.1')
+			library('spring-boot-starter-validation', 'org.springframework.boot', 'spring-boot-starter-validation').withoutVersion()
+			library('spring-boot-starter-test', 'org.springframework.boot', 'spring-boot-starter-test').withoutVersion()
+			library('spring-boot-starter-actuator', 'org.springframework.boot', 'spring-boot-starter-actuator').withoutVersion()
+			library('lombok', 'org.projectlombok:lombok:1.18.22')
+			library('springfox-boot-starter', 'io.springfox:springfox-boot-starter:3.0.0')
+			library('hysterix-core', 'com.netflix.hystrix:hystrix-core:1.5.18')
+			library('spring-security-core', 'org.springframework.security:spring-security-core:5.6.1')
+			library('junit-jupiter-api', 'org.junit.jupiter:junit-jupiter-api:5.8.2')
+			library('junit-jupiter-engine', 'org.junit.jupiter:junit-jupiter-engine:5.8.2')
+		}
+	}
+}
+
 rootProject.name = 'abtester'
