@@ -35,6 +35,7 @@ ext {
 	mapstructVersion = "1.5.0.Beta2"
 	lombokVersion = "1.18.22"
 	lombokMapstructBindingVersion = "0.2.0"
+	embeddedRedisVersion = "0.7.3"
 }
 
 dependencies {
@@ -61,11 +62,14 @@ dependencies {
 		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
 	}
 
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
-	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params'
-	testImplementation group: 'org.mockito', name: 'mockito-core'
-	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter'
-	testImplementation group: 'org.mockito', name: 'mockito-inline'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testImplementation 'org.junit.jupiter:junit-jupiter-params'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.mockito:mockito-junit-jupiter'
+	testImplementation 'org.mockito:mockito-inline'
+
+	testImplementation "it.ozimov:embedded-redis:${embeddedRedisVersion}"
+
 }
 
 springBoot {
