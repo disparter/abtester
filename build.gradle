@@ -1,12 +1,21 @@
 plugins {
-	id 'org.springframework.boot' version '3.0.0-SNAPSHOT'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'org.springframework.boot' version '2.6.4'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'maven-publish'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+	}
 }
 
 group = 'disparter.apps'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+version = '0.0.1'
+
+sourceCompatibility = 17
+targetCompatibility = 17
 
 configurations {
 	compileOnly {
@@ -14,25 +23,76 @@ configurations {
 	}
 }
 
+ext['slf4j.version'] = '1.7.20'
+
 repositories {
 	mavenCentral()
 	maven { url 'https://repo.spring.io/milestone' }
 	maven { url 'https://repo.spring.io/snapshot' }
 }
 
+ext {
+	mapstructVersion = "1.5.0.Beta2"
+	lombokVersion = "1.18.22"
+	lombokMapstructBindingVersion = "0.2.0"
+}
+
 dependencies {
+	implementation platform(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-integration'
 	implementation 'org.springframework.integration:spring-integration-redis'
 	implementation 'org.springframework.session:spring-session-data-redis'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
+
+	compileOnly "org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
+	annotationProcessor	"org.projectlombok:lombok:${lombokVersion}"
+	annotationProcessor "org.projectlombok:lombok-mapstruct-binding:${lombokMapstructBindingVersion}"
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.integration:spring-integration-test'
+
+	testImplementation(group: 'org.junit.jupiter', name: 'junit-jupiter'){
+		exclude group: "junit", module: "junit"
+		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+	}
+
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api'
+	testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params'
+	testImplementation group: 'org.mockito', name: 'mockito-core'
+	testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter'
+	testImplementation group: 'org.mockito', name: 'mockito-inline'
+}
+
+springBoot {
+	buildInfo()
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+configurations.all {
+	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+		if (details.requested.group == 'org.slf4j') {
+			details.useVersion '1.7.20'
+		}
+	}
+}
+
+publishing {
+	publications {
+		bootJava(MavenPublication) {
+			artifact bootJar
+		}
+	}
+	repositories {
+		maven {
+			url 'https://repo.example.com'
+		}
+	}
 }
