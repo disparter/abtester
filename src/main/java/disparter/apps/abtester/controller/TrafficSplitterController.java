@@ -4,7 +4,6 @@ import disparter.apps.abtester.controller.in.TrafficChannel;
 import disparter.apps.abtester.controller.in.TrafficSplitOptions;
 import disparter.apps.abtester.controller.out.TrafficSplitResult;
 import disparter.apps.abtester.service.TrafficSplitterService;
-import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Controller;
 
 @Controller("abtest")
