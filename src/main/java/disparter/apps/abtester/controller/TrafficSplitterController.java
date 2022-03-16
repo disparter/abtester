@@ -16,8 +16,8 @@ public class TrafficSplitterController {
         this.service = service;
     }
 
-    public TrafficSplitResult split(TrafficSplitOptions options, JSONObject payload){
-        TrafficChannel chosenChannel = service.split(options, payload);
+    public TrafficSplitResult split(TrafficSplitOptions options, String value){
+        TrafficChannel chosenChannel = service.split(options, value);
         var result = new TrafficSplitResult();
         result.setChannel(chosenChannel);
         return result;

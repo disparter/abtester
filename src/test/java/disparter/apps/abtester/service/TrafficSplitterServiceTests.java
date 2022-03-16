@@ -22,9 +22,9 @@ class TrafficSplitterServiceTests {
 	@Test
 	public void test_splitOn() {
 		TrafficSplitResult expected = new TrafficSplitResult();
-		JSONObject payload = null;
+		String value = null;
 		var options = new TrafficSplitOptions();
-		var result = service.split(options, payload);
+		var result = service.split(options, value);
 		Assertions.assertEquals(expected, result);
 	}
 
