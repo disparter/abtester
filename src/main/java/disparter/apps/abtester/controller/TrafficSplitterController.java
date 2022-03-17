@@ -6,6 +6,8 @@ import disparter.apps.abtester.controller.out.TrafficSplitResult;
 import disparter.apps.abtester.service.TrafficSplitterService;
 import org.springframework.stereotype.Controller;
 
+import java.util.Optional;
+
 @Controller("abtest")
 public class TrafficSplitterController {
 
@@ -16,9 +18,9 @@ public class TrafficSplitterController {
     }
 
     public TrafficSplitResult split(TrafficSplitOptions options, String value){
-        TrafficChannel chosenChannel = service.split(options, value);
+        Optional<TrafficChannel> chosenChannel = service.split(options, value);
         var result = new TrafficSplitResult();
-        result.setChannel(chosenChannel);
+        result.setChannel(chosenChannel.orElseThrow());
         return result;
     }
 
