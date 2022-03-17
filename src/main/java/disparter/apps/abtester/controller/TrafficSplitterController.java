@@ -4,7 +4,7 @@ import disparter.apps.abtester.controller.in.TrafficChannel;
 import disparter.apps.abtester.controller.in.TrafficSplitOptions;
 import disparter.apps.abtester.controller.out.TrafficSplitResult;
 import disparter.apps.abtester.service.TrafficSplitterService;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,11 +20,11 @@ public class TrafficSplitterController {
     }
 
     @PostMapping("split")
-    public TrafficSplitResult split(TrafficSplitOptions options, String value){
+    public ResponseEntity<TrafficSplitResult> split(TrafficSplitOptions options, String value){
         Optional<TrafficChannel> chosenChannel = service.split(options, value);
-        return TrafficSplitResult.builder()
+        return ResponseEntity.ok(TrafficSplitResult.builder()
                 .channel(chosenChannel.orElseThrow())
-                .build();
+                .build());
     }
 
 }
